@@ -1,6 +1,5 @@
 const data_json = document.querySelector("script[type='application/json']").textContent;
 const { edges, nodes } = JSON.parse(data_json);
-const tooltip = d3.select("#tooltip");
 class MyHandler extends Paged.Handler {
     constructor(chunker, polisher, caller) {
         super(chunker, polisher, caller);
@@ -19,6 +18,7 @@ function plot_network() {
         .attr("width", width)
         .attr("height", height);
 
+    const tooltip = d3.select("#tooltip");
     const unique_sections = [...new Set(nodes.map(d => d.section))];
     const color_scale = d3.scaleOrdinal()
         .domain(unique_sections)
