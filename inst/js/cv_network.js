@@ -60,13 +60,13 @@ function plot_network() {
         .attr("fill", d => color_scale(d.section))
         .call(drag(simulation))
         .on("mouseover", function(event, d) {
-            let [x, y] = d3.pointer(event);
-            tooltip.style("left", x + "px")
-                .style("top", y + "px")
+            let [x, y] = d3.pointer(event, this);
+            tooltip.style("left", (x + 10) + "px")
+                .style("top", (y + 10) + "px")
                 .style("visibility", "visible")
                 .html(`${d.section} - ${d.title}`);
         })
-        .on("mouseout", function() {
+        .on("mouseout", function(event, d) {
             tooltip.style("visibility", "hidden");
         });
 
