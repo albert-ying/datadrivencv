@@ -18,7 +18,15 @@ function plot_network() {
         .attr("width", width)
         .attr("height", height);
 
-    const tooltip = d3.select("#tooltip");
+    const tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background-color", "white")
+        .style("padding", "5px")
+        .style("border", "solid 1px #ccc")
+        .style("border-radius", "5px")
+        .style("pointer-events", "none")
+        .style("visibility", "hidden");
     const unique_sections = [...new Set(nodes.map(d => d.section))];
     const color_scale = d3.scaleOrdinal()
         .domain(unique_sections)
@@ -51,13 +59,12 @@ function plot_network() {
         .attr("r", 5)
         .attr("fill", d => color_scale(d.section))
         .call(drag(simulation))
-        .on("mouseover", function(d) {
-            tooltip.style("visibility", "visible")
+        .on("mouseover", function(event, d) {
+            let [x, y] = d3.pointer(event);
+            tooltip.style("left", x + "px")
+                .style("top", y + "px")
+                .style("visibility", "visible")
                 .html(`${d.section} - ${d.title}`);
-        })
-        .on("mousemove", function() {
-            tooltip.style("top", (d3.event.pageY - 10) + "px")
-                .style("left", (d3.event.pageX + 10) + "px");
         })
         .on("mouseout", function() {
             tooltip.style("visibility", "hidden");
